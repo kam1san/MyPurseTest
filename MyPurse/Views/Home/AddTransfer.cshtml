@@ -1,0 +1,96 @@
+﻿@model MyPurse.Models.TransactionsViewModel
+@{
+    ViewBag.Title = "AddAccount";
+    Layout = null;
+}
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+
+<script>
+    var AddTs = function () {
+        var Tsdata = $("#AddForm").serialize();
+        $.ajax({
+            type: "Post",
+            url: "/Home/ConfirmAddTransferTransaction",
+            data: Tsdata,
+            success: function (response) {
+                if (response != "") {
+                    alert(response);
+                    window.location.href = '/Home/Transactions';
+                }
+                else
+                    window.location.href = '/Home/Transactions';
+            }
+        })
+    }
+</script>
+<style>
+    body {
+        font-family: Arial;
+    }
+
+    .split {
+        height: 100%;
+        width: 30%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-top: 5%;
+    }
+
+    .left {
+        left: 10px;
+    }
+
+    .right {
+        transition: 0.1s;
+        right: 5%;
+    }
+</style>
+
+
+
+
+<div class="container">
+    <div class="split left">
+        <div class="container" style="width:70%">
+            <ul class="list-group">
+                <li class="list-group-item">@Html.ActionLink("Accounts", "Accounts", null, new { @class = "btn btn-block btn-success" })</li>
+                <li class="list-group-item">@Html.ActionLink("Transactions", "Transactions", null, new { @class = "btn btn-block btn-success" })</li>
+                <li class="list-group-item">@Html.ActionLink("Transactions types", "TS_types", null, new { @class = "btn btn-block btn-success" })</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="split right">
+        <div class="container split right" style="width:70%">
+            <form id="AddForm">
+                <div class="form-group">
+                    @Html.DropDownListFor(model => model.AccountID, ViewBag.Accounts as SelectList, "--SELECT--", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(m => m.Amount, new { @class = "form-control", @placeholder = "Amount" })
+                </div>
+                <div class="form-group">
+                    @Html.DropDownListFor(model => model.TransactionType, ViewBag.Types as SelectList, "--SELECT--", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.DropDownListFor(model => model.AccountTransferTo, ViewBag.Accounts as SelectList, "--SELECT--", new { @class = "form-control" })
+                </div>
+                <div class="form-group">
+                    @Html.TextBoxFor(model => model.Date, new { maxlength = "10", size = "10", @class = "date-picker dateRegion form-control", @placeholder = "Transaction date" })
+                </div>
+                <div class="form-group">
+                    <a href="#" class="btn btn-primary" onclick="AddTs()">Submit</a>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>
+
+

@@ -1,0 +1,142 @@
+﻿@model IEnumerable<MyPurse.Models.TypeViewModel>
+@{
+    ViewBag.Title = "Accounts";
+    Layout = null;
+}
+
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+<script src="~/Scripts/bootstrap.min.js"></script>
+<script src="~/Scripts/bootstrap.js"></script>
+<script>
+    var ConfirmDelete = function (ID) {
+        $("#hiddenTypeID").val(ID);
+        $("#DeleteModal").modal('show');
+    }
+
+    var DeleteType = function () {
+        $("#loaderDiv").show();
+        var typeID = $("#hiddenTypeID").val();
+
+        $.ajax({
+            type: "POST",
+            url: "/Home/DeleteType",
+            data: { ID: typeID },
+            success: function () {
+                $("#loaderDiv").hide();
+                $("#DeleteModal").modal("hide");
+                $("#row_" + typeID).remove();
+            }
+        })
+    }
+</script>
+
+
+
+<style>
+    body {
+        font-family: Arial;
+    }
+
+    .split {
+        height: 100%;
+        width: 30%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-top: 5%;
+    }
+
+    .left {
+        left: 10px;
+    }
+
+    .right {
+        transition: 0.1s;
+        right: 5%;
+    }
+</style>
+
+<div class="container">
+
+    <div class="split left">
+        <div class="container" style="width:70%">
+            <ul class="list-group">
+                <li class="list-group-item">@Html.ActionLink("Accounts", "Accounts", null, new { @class = "btn btn-block btn-success" })</li>
+                <li class="list-group-item">@Html.ActionLink("Transactions", "Transactions", null, new { @class = "btn btn-block btn-success" })</li>
+                <li class="list-group-item">@Html.ActionLink("Transactions types", "TS_types", null, new { @class = "btn btn-block btn-success" })</li>
+            </ul>
+        </div>
+        <div class="container" style="width:70%; margin-top:10%">
+
+            <ul class="list-group">
+                <li class="list-group-item">@Html.ActionLink("Add Type", "AddType", Model, new { @class = "btn btn-block btn-success" })</li>
+             </ul>
+        </div>
+    </div>
+
+    <div class="split right">
+        <div class="container split right" style="width:70%">
+            @if (Model != null)
+            {
+                <table style="border-radius:20px" class="table table-condensed">
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Type</th>
+                        <th></th>
+                    </tr>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                        <tr id="row_@item.ID">
+                            <td>@item.ID</td>
+                            <td>@item.Description</td>
+                            <td>@item.Type</td>
+                            <td>@Html.ActionLink("Edit", "EditType", new { ID = item.ID }, new { @class = "btn btn-block btn-success" })</td>
+                            <td><a href="#" class="btn btn-danger" onclick="ConfirmDelete(@item.ID)"><i class="glyphicon glyphicon-trash"></i></a></td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+
+                <input type="hidden" id="hiddenTypeID" />
+
+            }
+        </div>
+    </div>
+
+    <div class="modal fade" id="DeleteModal">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <a href="#" class="close" data-dismiss="modal">&times;</a>
+                    <h3 class="modal-title">Delete type</h3>
+                </div>
+
+                <div class="modal-body">
+                    <h4>Are you sure you want to delete this data?</h4>
+
+                    <div style="text-align:center;display:none" id="loaderDiv">
+                        <img src="~/Content/InternetSlowdown_Day.gif" width="150"
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="#" class="btn btn-default" data-dismiss="modal">Cancel</a>
+                    <a href="#" class="btn btn-success" onclick="DeleteType()">Confirm</a>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+
+
+

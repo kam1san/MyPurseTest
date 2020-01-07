@@ -1,0 +1,46 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+
+<link href="~/Content/bootstrap.css" rel="stylesheet" />
+
+<style>
+    body {
+        font-family: Arial;
+    }
+
+    .split {
+        height: 100%;
+        width: 30%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        overflow-x: hidden;
+        padding-top: 5%;
+    }
+
+    .left {
+        left: 10px;
+    }
+
+    .right {
+        transition: 0.1s;
+        right: 5%;
+    }
+</style>
+
+<div class="split left">
+    <div class="container" style="width:70%">
+        <ul class="list-group">
+            <li class="list-group-item">@Html.ActionLink("Accounts", "Accounts", null, new { @class = "btn btn-block btn-success" })</li>
+            <li class="list-group-item">@Html.ActionLink("Transactions", "Transactions", null, new { @class = "btn btn-block btn-success" })</li>
+            <li class="list-group-item">@Html.ActionLink("Transactions types", "TS_types", null, new { @class = "btn btn-block btn-success" })</li>
+        </ul>
+    </div>
+</div>
+
+<div class="split right">
+    <div class="container">
+    </div>
+</div>
